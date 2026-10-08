@@ -1,10 +1,10 @@
 #!/bin/bash
 
-# Missing the below tools won't break the zip build, but this does prevent translatons 
-# & schemas being rebuilt (if there are changes). Releases should always be built with
+# Missing translation tools won't break the zip build, but this does prevent translations
+# being rebuilt (if there are changes). Releases should always be built with
 # the tools, but test builds in VMs it (generally) should be ok
 
-glib-compile-schemas schemas/
+glib-compile-schemas schemas/ || exit 1
 intltool-extract --type=gettext/glade ui/prefsadw.ui
 #intltool-extract --type=gettext/glade ui/carousel4.ui
 xgettext -k -k_ -kN_ --omit-header -o locale/BingWallpaper.pot ui/prefsadw.ui.h ui/intervals.utils.js.h extension.js prefs.js \
@@ -29,4 +29,4 @@ rm BingWallpaper@ineffable-gmail.com.zip
 zip -r BingWallpaper@ineffable-gmail.com.zip *
 
 zip -d BingWallpaper@ineffable-gmail.com.zip screenshot/* screenshot *.sh npm-debug.log icons/original/* .* translations.txt \
-    *.h package.json *.po *.pot test.js schemas/gschemas.compiled venv/*
+    *.h package.json *.po *.pot test.js venv/*
